@@ -6,8 +6,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import passenger.Passenger;
+import tests.Person;
 import ticket.Ticket;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HibernateUtil {
@@ -16,6 +18,7 @@ public class HibernateUtil {
     static {
         INSTANCE = new HibernateUtil();
     }
+
     @Getter
     private SessionFactory sessionFactory;
 
@@ -23,6 +26,7 @@ public class HibernateUtil {
         sessionFactory = new Configuration()
                 .addAnnotatedClass(Passenger.class)
                 .addAnnotatedClass(Ticket.class)
+                .addAnnotatedClass(Person.class)
                 .buildSessionFactory();
     }
 
@@ -35,7 +39,9 @@ public class HibernateUtil {
     }
 
     public static void main(String[] args) {
+
         HibernateUtil hibernateUtil = new HibernateUtil();
+
         // Get single
 //        Session session = hibernateUtil.getSessionFactory().openSession();
 //        final Passenger passenger = session.get(Passenger.class, 1l);
@@ -61,9 +67,25 @@ public class HibernateUtil {
 //        session.close();
 
         //List all tickets
+//        Session session = hibernateUtil.getSessionFactory().openSession();
+//        List<Ticket> tickets = session.createQuery("from Ticket",Ticket.class).list();
+//        System.out.println("tickets = " + tickets);
+//        session.close();
+
+
+//        Session session = hibernateUtil.getSessionFactory().openSession();
+//            final Transaction transaction = session.beginTransaction();
+//                Person newPerson = new Person();
+//                newPerson.setAddressList(Arrays.asList("a1", "a2"));
+//                session.persist(newPerson);
+//                System.err.println("newPerson = " + newPerson);
+//        transaction.commit();
+//        session.close();
+
+
         Session session = hibernateUtil.getSessionFactory().openSession();
-        List<Ticket> tickets = session.createQuery("from Ticket",Ticket.class).list();
-        System.out.println("tickets = " + tickets);
+        final List<Person> fromPerson = session.createQuery("from Person ", Person.class).list();
+        System.out.println("fromPerson = " + fromPerson);
         session.close();
 
     }
