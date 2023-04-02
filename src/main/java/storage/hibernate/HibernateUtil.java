@@ -6,7 +6,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import passenger.Passenger;
+import storage.DataBaseInitService;
 import tests.Person;
+import tests.PersonInfo;
+import tests.Workplace;
 import ticket.Ticket;
 
 import java.util.Arrays;
@@ -27,6 +30,8 @@ public class HibernateUtil {
                 .addAnnotatedClass(Passenger.class)
                 .addAnnotatedClass(Ticket.class)
                 .addAnnotatedClass(Person.class)
+                .addAnnotatedClass(PersonInfo.class)
+                .addAnnotatedClass(Workplace.class)
                 .buildSessionFactory();
     }
 
@@ -39,6 +44,9 @@ public class HibernateUtil {
     }
 
     public static void main(String[] args) {
+        //flyway DB migration
+        new DataBaseInitService().initDB();
+
 
         HibernateUtil hibernateUtil = new HibernateUtil();
 
@@ -55,7 +63,7 @@ public class HibernateUtil {
 //        System.out.println("passengerList = " + passengerList);
 //        session.close();
 
-//Add new passenger
+        //Add new passenger
 //        Session session = hibernateUtil.getSessionFactory().openSession();
 //            Transaction transaction = session.beginTransaction();
 //                Passenger newPassenger = new Passenger();
@@ -72,21 +80,80 @@ public class HibernateUtil {
 //        System.out.println("tickets = " + tickets);
 //        session.close();
 
-
+        // One to one adding
 //        Session session = hibernateUtil.getSessionFactory().openSession();
 //            final Transaction transaction = session.beginTransaction();
 //                Person newPerson = new Person();
-//                newPerson.setAddressList(Arrays.asList("a1", "a2"));
+//                newPerson.setAddressList(Arrays.asList("AAA", "BBB"));
+//                System.err.println("Is persist before persist() ? -  " + session.contains(newPerson));
 //                session.persist(newPerson);
-//                System.err.println("newPerson = " + newPerson);
+//                PersonInfo personInfo = new PersonInfo();
+//                personInfo.setName("Eugene");
+//                personInfo.setPerson(newPerson);
+//                newPerson.setPersonInfo(personInfo);
+//                session.persist(newPerson);
 //        transaction.commit();
+//        System.err.println("Is persist after .commit() ? - " + session.contains(newPerson));
+//        session.close();
+
+//        final Session session = hibernateUtil.getSessionFactory().openSession();
+//            final Transaction transaction = session.beginTransaction();
+//                final Person person = new Person();
+//
+//                person.setAddressList(List.of("Vinnytsya"));
+//                session.persist(person);
+//
+//                final PersonInfo personInfo = new PersonInfo();
+//                personInfo.setName("Vika");
+//                personInfo.setPerson(person);
+//                person.setPersonInfo(personInfo);
+//
+//                final Workplace workplace = new Workplace();
+//                workplace.setPlace("Non");
+//                workplace.setPerson(person);
+//
+//                session.persist(workplace);
+//            transaction.commit();
+//        session.close();
+
+//        Session session = hibernateUtil.getSessionFactory().openSession();
+//        final List<Person> fromPerson = session.createQuery("from Person ", Person.class).list();
+//        for (Person person : fromPerson) {
+//            System.out.println("person = " + person);
+//        }
 //        session.close();
 
 
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        final List<Person> fromPerson = session.createQuery("from Person ", Person.class).list();
-        System.out.println("fromPerson = " + fromPerson);
-        session.close();
+
+//        final Session session = hibernateUtil.getSessionFactory().openSession();
+//        final Person person = session.get(Person.class, 51L);
+//        System.out.println("person = " + person);
+
+        // Adding another new work place through Workplace entity
+//        final Session session = hibernateUtil.getSessionFactory().openSession();
+//            final Transaction transaction = session.beginTransaction();
+//                final Person person = session.get(Person.class, 52L);
+//
+//                Workplace workplace = new Workplace();
+//                workplace.setPlace("School");
+//                workplace.setPerson(person);
+//
+//                session.persist(workplace);
+//            transaction.commit();
+
+//        final Session session = hibernateUtil.getSessionFactory().openSession();
+//            final Transaction transaction = session.beginTransaction();
+//                final Person person = session.get(Person.class, 51L);
+//
+//                Workplace workplace = new Workplace();
+//                workplace.setPlace("247 lS");
+//                workplace.setPerson(person);
+//
+//                session.persist(workplace);
+//
+//            transaction.commit();
+//        session.close();
+
 
     }
 

@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS workplace(
+    id IDENTITY PRIMARY KEY,
+    person_id BIGINT,
+    place VARCHAR(200),
+    FOREIGN KEY (person_id) REFERENCES PERSON(id) ON DELETE CASCADE
+);
